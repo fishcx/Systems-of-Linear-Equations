@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+	<meta name="author" content="Tom Fisher FishMath.com">
+    <title>Systems of Equations Generator</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://drive.google.com/uc?export=view&id=1hHnc5a1nl-FpDmmVsh2HDOi5eHhIAzgn">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>  
+   <!-- <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script> -->
+    <script src="https://unpkg.com/mathjs@5.5.0/dist/math.min.js"></script>
+    <script src="https://cdn.plot.ly/plotly-1.35.2.min.js"></script>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.css" integrity="sha384-zB1R0rpPzHqg7Kpt0Aljp8JPLqbXI3bhnPWROx27a9N0Ll6ZP/+DiW/UqRcLbRjq" crossorigin="anonymous">
+    <!-- The loading of KaTeX is deferred to speed up page rendering -->
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.js" integrity="sha384-y23I5Q6l+B6vatafAwxRu/0oK/79VlbSz7Q9aiSZUvyWYIYsd+qj+o24G5ZU2zJz" crossorigin="anonymous"></script>
+    <!-- To automatically render math in text elements, include the auto-render extension: -->
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/contrib/auto-render.min.js" integrity="sha384-kWPLUVMOks5AQFrykwIup5lo0m3iMkkHrD0uJ4H5cjeGihAutqP0yW0J6dpFiVkI" crossorigin="anonymous"
+        onload="renderMathInElement(document.body);"></script>
+  </head>
+
+  <body>
+		<!--<h2>Systems of Equations</h2><br>-->
+		<div>
+		 Type: 
+         <select name="type" id="type" class="changeItem">        
+            <option value=4>All</option>
+            <option value=3>Graphing</option>
+            <option value=1>Substitution</option>
+            <option value=2>Elimination</option>   
+         </select><input type="button" value="Generate" id="generate" class="btn btn-main">
+           <br>
+           
+           <input type="checkbox"  class="changeItem" data-toggle="toggle" data-on="Mixed" data-off="One Solution" id="one-toggle" name="one-toggle" data-offstyle="btn btn-main btn-toggle btn-sm" data-onstyle="btn btn-info btn-toggle btn-sm">            
+
+           <span id = "dotSliderDiv">
+         <input type="checkbox" name="dotSlider" id="dotSlider" hidden>
+        <input type="button" value="Hide Dots" id="dot-button" class="btn btn-main btn-toggle btn-sm"> </span>
+        
+           <p id="gridpaper" class="p2"><a target=”_blank” href="https://drive.google.com/open?id=13cKnSUD8j2ePdDM0C2ZZ4HFcnWWyKbL2">Download Grid Paper</a></p>
+           <div id="generatedEquation"></div>  	        
+       <br>
+        <input type="button" value="Show Answer" id="show-answer" class="btn btn-main"><a id="videoLink" target="_blank" herf=""><input type="button" value="&#9658; Watch Video" id="video-button" class="btn btn-success"></a>       
+       <br>
+           <br>
+		<div id="answer"></div>
+        <div id="plot-dots"></div>
+        <div id="plot-no-dots"></div>
+        </div>
+  </body>
+</html>
+<?!= include('toggle'); ?> 
+<?!= include('script'); ?> 
+<?!= include('helperscript'); ?> 

@@ -1,0 +1,659 @@
+<script>
+var graphs = false;
+	$(document).ready(function() {
+    
+    $('.changeItem').change(function(){
+        $('#generate').click();
+    });
+
+    $(document).keypress(function (e) {
+        var key = e.which;
+         if(key == 13)  // the enter key code
+         {
+            $('#generate').click();
+             return false;  
+          }
+    });
+    
+    $('#video-button').hide();
+    $('#plot-dots').hide();
+    $('#plot-no-dots').hide();
+    $('#gridpaper').hide();
+    $('#dotSliderDiv').hide();
+   
+    var testing = false;
+    $('#generate').click(function(){
+        // reset when generated
+        $("#show-answer").val("Show Answer");
+        $('#plot-dots').hide();
+        $('#plot-no-dots').hide();
+        
+        if(!testing){$("#answer").hide(); $("#show-answer").val("Show Answer");}
+        
+        // if ALL is selected, randomly pick one
+        var type = parseInt($("#type").val());
+        if(type == 4){
+         
+         type = random(1,3);
+         
+       }
+        
+        if(type == 3) {
+           $('#dotSliderDiv').show();
+           graphs = true;
+        } else{
+           $('#dotSliderDiv').hide();
+           graphs = false;
+        }
+        
+        // default is only one solution
+        var one = true;
+        
+        // otherwise allow for infinite and no solutions
+        if($("#one-toggle").is(':checked')){   one = false; }
+        
+        generate(type,one);    
+        
+     });
+
+
+    $("#show-answer").click(function(){
+       if($("#answer").is(":hidden") ){
+          $("#answer").show();
+          
+          if(graphs){
+            if($("#dotSlider").is(':checked')){
+                 $('#plot-dots').show();
+                 $('#plot-no-dots').hide();
+             }
+             else {
+                 $('#plot-dots').hide();
+                 $('#plot-no-dots').show();
+              }
+          }
+          $("#show-answer").val("Hide Answer");
+          
+       } else{
+         $("#answer").hide();
+         $('#plot-dots').hide();
+         $('#plot-no-dots').hide();
+         $("#show-answer").val("Show Answer");
+        }
+        
+     });
+    
+    $('#dotSlider').prop('checked', true);
+    $("#dot-button").click(function(){
+        
+        if($('#dotSlider').is(':checked')){
+        
+            if($("#show-answer").val() == "Hide Answer"){
+               $('#plot-dots').hide();
+               $('#plot-no-dots').show();
+            }
+            $(this).val('Show Dots');
+            $('#dotSlider').prop('checked', false);
+            
+        } else {
+            if($("#show-answer").val() == "Hide Answer"){
+               $('#plot-dots').show();
+               $('#plot-no-dots').hide();
+            }
+            $(this).val('Hide Dots');
+            $('#dotSlider').prop('checked', true);
+        }
+    });
+    
+    if(testing){ 
+    
+       $("#answer").show();
+       if($('#dotSlider').is(':checked')){
+          $('#plot-dots').show();
+       } else{
+          $('#plot-no-dots').show();
+       }
+       
+    }
+    
+    });
+    
+	function generate(type, one){
+       
+       if(type == 3){
+         $('#gridpaper').show();
+       }else{
+         $('#gridpaper').hide();
+       }
+       
+       var videoLinks = ["https://www.youtube.com/watch?v=Kfnw7lq8h1g",
+                         "https://www.youtube.com/watch?v=sJzwhfmRx1M",
+                         "https://www.youtube.com/watch?v=tenKlrBx9Js"];
+       
+       if(videoLinks[type-1].length != 0){ 
+         $("#videoLink"). attr("href", videoLinks[type-1]);
+         $('#video-button').show();
+       }
+       else{
+         $('#video-button').hide();
+       }
+       
+       this.equation1 = "";
+       this.equation2 = "";
+       this.answer = "";
+       
+       $("#generatedEquation").html("");
+       $("#answer").html("");
+       
+       switch(type) {
+       
+           case 1: substitution(one); break;
+           case 2: elimination(one); break;
+           case 3: graphing(one); break;
+       }            
+          
+       $("#generatedEquation").html("\\("+simplify(equation1)+"\\)<br>\\("+simplify(doublesigns(equation2))+"\\)");             
+       $("#answer").html(answer);
+       renderMathInElement(document.body);
+       
+       }
+       
+       function substitution(one){
+          
+          var a = ""; var b = ""; var c = ""; var d = ""; var e = ""; var f = ""; var g = ""; var y = ""; var x = ""; var sf = ""; var absx = ""; var h = "";
+          var a1 = ""; var b1 = "";
+          x = random(-10,10);
+          y = random(-10,10);
+          this.answer =  "\\(("+x+", "+y+")\\)";
+          var end = 8;
+          
+          if(!one){ end = 12;}
+          
+          switch(random(0,end)){
+          //switch(9){
+              
+              case 0: case 1: case 2:  
+              a = non_zero_random(-5,5);
+              b = non_zero_random(-5,5);
+              do{d = random(2,5);} while(-1*a==d*b);
+              c = a*x+b*y;
+              e = y-(d*x);
+              this.equation1 = a+"x + "+b+"y = "+c; this.equation2="y = "+d+"x + "+e;  
+              break;
+              
+              case 3: case 4: case 5: 
+              a = non_zero_random(-5,5);
+              b = non_zero_random(-5,5);
+              do{d = random(2,5);} while(-1*a==d*b);
+              c = a*x+b*y;
+              e = x-(d*y); 
+              this.equation2 = a+"x + "+b+"y = "+c; this.equation1="x = "+d+"y + "+e;  
+              break;
+              
+              case 6: case 7: case 8: 
+              /* This case works, but it creates fractions which can be avoided using the other method below */
+              /*
+              a = random(2,5);
+              b = random(-3,-1);
+              do{d = random(2,5);} while(-1*a==d*b);
+              c = a*x+b*y;
+              e = y-(d*x);
+              this.equation1 = "y = "+simplifyFrac(c,b)+" - "+simplifyFrac(a,b)+"x"; this.equation2="y = "+d+"x + "+e;
+              */
+              a = non_zero_random(-8, 8);
+              b = non_zero_random(-8, 8);
+              // makes sure there is one unique solution
+              do{c = non_zero_random(-8, 8);} while(c==a);
+              y = a*x+b;
+              this.answer =  "\\(("+x+", "+y+")\\)";
+              d = (y)-(c*x);
+              this.equation1 = "y = "+a+"x + "+b; this.equation2 = "y = "+c+"x + "+d;
+              break;
+              
+              // infinite solutions
+              case 9:
+              d = non_zero_random(-5,5);
+              a = non_zero_random(-5,5);
+              b = non_zero_random(-5,5);
+              a = -1*d*b;
+              c = a*x+b*y;
+              e = y-(d*x);
+              this.answer = "\\(\\infty\\) solutions, equivalent lines";
+              this.equation1 = a+"x + "+b+"y = "+c; this.equation2="y = "+d+"x + "+e; 
+              break;
+              
+              // infinite solutions
+              case 10:
+              d = non_zero_random(-5,5);
+              a = non_zero_random(-5,5);
+              b = -1*d*a;
+              e = non_zero_random(-10,10);
+              c = e*a;
+              this.answer = "\\(\\infty\\) solutions, equivalent lines";
+              this.equation2 = a+"x + "+b+"y = "+c; this.equation1="x = "+d+"y + "+e; 
+              break;
+              
+              // no solutions
+              case 11:
+              d = non_zero_random(-5,5);
+              b = non_zero_random(-5,5);
+              a = -1*d*b;
+              c = a*x+b*y;
+              do{e = non_zero_random(-20,20);} while(e == y-(d*x));
+              this.answer = "No solutions, parallel lines";
+              this.equation1 = a+"x + "+b+"y = "+c; this.equation2="y = "+d+"x + "+e; 
+              break;
+              
+              // no solutions
+              case 12:
+              d = non_zero_random(-5,5);
+              a = non_zero_random(-5,5);
+              b = -1*d*a;
+              e = non_zero_random(-10,10);
+              do{c = non_zero_random(-20,20);} while(c == e*a);
+              this.answer = "No solutions, parallel lines";
+              this.equation2 = a+"x + "+b+"y = "+c; this.equation1="x = "+d+"y + "+e; 
+              break;
+
+           }
+        }
+    
+       function elimination(one){
+  
+          var a = ""; var b = ""; var c = ""; var d = ""; var e = ""; var f = ""; var g = ""; var y = ""; var x = ""; var sf = "";
+          
+          x = random(-10,10);
+          y = random(-10,10);
+          this.answer = "\\(("+x+", "+y+")\\)";
+          
+          var end = 5;
+          
+          if(!one){ end = 9;}
+          
+          switch(random(0,end)){
+             
+              // makes y easy to eliminate
+              case 0: case 1: 
+              a = non_zero_random(-5,5);
+              do{d = non_zero_random(-5,5);} while(d == a);
+              b = non_zero_random(-3,3);
+              do{sf = non_zero_random(-5,5);} while(sf*a == d);
+              e = sf*b;
+              c = a*x+b*y;
+              f = d*x+e*y;
+              this.equation1 = a+"x + "+b+"y = "+c; this.equation2 =d+"x + "+e+"y = "+f;  
+              break;
+              
+              // makes x easy to eliminate
+              case 2: case 3:
+              b = non_zero_random(-5,5);
+              do{e = non_zero_random(-5,5);} while(e == b);
+              a = non_zero_random(-3,3);
+              do{sf = non_zero_random(-5,5);} while(sf*b == e);
+              d = sf*a;
+              c = a*x+b*y;
+              f = d*x+e*y;
+              this.equation1 = a+"x + "+b+"y = "+c; this.equation2 =d+"x + "+e+"y = "+f;  
+              break;
+              
+              //rerarranges cases 0 and 1
+              case 4:   
+              a = non_zero_random(-5,5);
+              do{d = non_zero_random(-5,5);} while(d == a);
+              b = non_zero_random(-3,3);
+              do{sf = non_zero_random(-5,5);} while(sf*a == d);
+              e = sf*b;
+              c = a*x+b*y;
+              f = d*x+e*y;
+              this.equation1 = a+"x = "+c+" + "+-1*b+"y"; this.equation2=d+"x + "+e+"y = "+f;
+              break;
+              
+              // rearranges cases 2 and 3
+              case 5:             
+              b = non_zero_random(-5,5);
+              do{e = non_zero_random(-5,5);} while(e == b);
+              a = non_zero_random(-3,3);
+              do{sf = non_zero_random(-5,5);} while(sf*b == e);
+              d = sf*a;
+              c = a*x+b*y;
+              f = d*x+e*y;
+              this.equation1 = a+"x = "+c+" + "+-1*b+"y"; this.equation2=d+"x + "+e+"y = "+f;
+              break;
+              
+              // infinite solutions
+              case 6:
+              a = non_zero_random(-10, 10);
+              b = non_zero_random(-10, 10);
+              c = non_zero_random(-10, 10);
+              sf = random(-5, -1);
+              d = a*sf;
+              e = b*sf;
+              f = c*sf
+              this.answer = "\\(\\infty\\) solutions, equivalent lines";
+              this.equation1 = a+"x = "+c+" + "+-1*b+"y"; this.equation2=d+"x + "+e+"y = "+f;
+              break;
+              
+              // infinite solutions
+              case 7:
+              a = non_zero_random(-10, 10);
+              b = non_zero_random(-10, 10);
+              c = non_zero_random(-10, 10);
+              sf = random(-5, -1);
+              d = a*sf;
+              e = b*sf;
+              f = c*sf
+              this.answer = "\\(\\infty\\) solutions, equivalent lines";
+              this.equation1 = a+"x + "+b+"y = "+c; this.equation2=d+"x + "+e+"y = "+f;
+              break;
+              
+              // no solutions
+              case 8:
+              a = non_zero_random(-10, 10);
+              b = non_zero_random(-10, 10);
+              c = non_zero_random(-10, 10);
+              sf = random(-5, -1);
+              d = a*sf;
+              e = b*sf;
+              do{f = non_zero_random(-20,20);}while(f== c*sf);
+              this.answer = "No solutions, parallel lines";
+              this.equation1 = a+"x + "+b+"y = "+c; this.equation2=d+"x + "+e+"y = "+f;
+              break;
+              
+              // no solutions
+              case 9:
+              a = non_zero_random(-10, 10);
+              b = non_zero_random(-10, 10);
+              c = non_zero_random(-10, 10);
+              sf = random(-5, -1);
+              d = a*sf;
+              e = b*sf;
+              do{f = non_zero_random(-20,20);}while(f== c*sf);
+              this.answer = "No solutions, parallel lines";
+              this.equation1 = a+"x = "+c+" + "+-1*b+"y"; this.equation2=d+"x + "+e+"y = "+f;
+              break;
+           }   
+        }
+       
+       function graphing(one){
+            
+          var a = ""; var b = ""; var c = ""; var d = ""; var e = ""; var f = ""; var g = ""; var y = ""; var x = ""; var sf = ""; 
+          
+          var line1, line2;
+          
+          x = non_zero_random(-5,5);
+          y = non_zero_random(-5,5);
+          
+          this.answer = "\\(("+x+", "+y+")\\)";
+          
+          var end = 5;
+          
+          if(!one){ end = 7;}
+          
+          switch(random(0,end)){
+              // both y = form
+              case 0: case 1: case 2:
+              do{c = non_zero_random(-5, 5); d = y-(c*x); } while (d >= 11 || d <= -11);
+              do{b = random(-6, 6);} while(y==b || d==b || b == (y-c*x));
+              a = simplifyFrac(y-b,x);
+          
+              this.equation2 = "y = "+c+"x"; 
+              if(d != 0){
+                this.equation2 +=" + "+d;
+              }
+          
+              this.equation1 = "y = "+a+"x";
+              if(b != 0){
+                 this.equation1 +=" + "+b;
+              }
+              
+              // lines {n:num, d:den, b:yInt};
+              line1 = {n:(y-b), d:x, b:b};
+              line2 = {n:c, d:1, b:d};
+              
+              break;
+              
+              // solve for y first
+              case 3: case 4: case 5:
+              do{c = non_zero_random(-5, 5); d = y-(c*x); } while (d >= 11 || d <= -11);
+              do{b = random(-6, 6);} while(y==b || d==b || b == (y-c*x));
+              a = b-y;
+              e = x*b;
+          
+              this.equation2 = "y = "+c+"x"; 
+              if(d != 0){
+                this.equation2 +=" + "+d;
+              }
+          
+              this.equation1 = x+"y + "+a+ "x = "+e;    
+              
+              // lines {n:num, d:den, b:yInt};
+              line1 = {n:(-1*a), d:x, b:b};
+              line2 = {n:c, d:1, b:d};
+              
+              break;
+              
+              // infinite solutions
+              case 6:
+              a = random(2, 5, 1);
+              b = a*non_zero_random(-5, 5, 1);
+              c = a*non_zero_random(-5, 5, 1);
+              e = -1*b/a;
+              this.equation1 = a+"y + "+b+"x = "+c;
+              this.equation2 = "y = "+e+"x + "+(c/a);
+              this.answer = "\\(\\infty\\) solutions, equivalent lines";
+              
+              // lines {n:num, d:den, b:yInt};
+              line1 = {n:e, d:1, b:(c/a)};
+              line2 = {n:e, d:1, b:(c/a)};
+              
+              break;
+              
+              // no solutions
+              case 7:
+              a = random(2, 5, 1);
+              b = a*non_zero_random(-5, 5, 1);
+              c = a*non_zero_random(-5, 5, 1);
+              e = -1*b/a;
+              do{f = non_zero_random(-10,10);} while(f == (c/a));
+              this.equation1 = a+"y + "+b+"x = "+c;
+              this.equation2 = "y = "+e+"x + "+f;
+              this.answer = "No solutions, parallel lines";
+              
+              // lines {n:num, d:den, b:yInt};
+              line1 = {n:e, d:1, b:(c/a)};
+              line2 = {n:e, d:1, b:f};
+              
+              break;
+              
+              
+          }
+              draw([line1,line2],true,"plot-dots");
+              draw([line1,line2],false,"plot-no-dots");
+          
+       }
+    
+    function draw(lines,dotBoolean,plot) {
+    
+    var colors = ['#3F4591', '#129649'];
+    var shadingTriangles = [];
+    try {
+
+      var data = [];
+      
+      for(var k = 0; k < lines.length; k++){
+         
+         var col = colors[k]; 
+         
+         // compile the expression once
+         var expr = math.compile(lines[k].n/lines[k].d+"x + "+lines[k].b);
+         
+         // evaluate the expression repeatedly for different values of x
+      // for some reason, using an increment of 0.1 makes it so that the "pretty points" no longer work - needed for 1/x
+      var xValues = math.range(-11, 11, 0.25).toArray();
+      const yValues = xValues.map(function (x) {
+        return expr.eval({x: x});
+      })
+      
+      var xValues2 = [];
+      var yValues2 = []
+      for(var i = 0; i < xValues.length; i ++){         
+         var yvalue = expr.eval({x: xValues[i]});
+
+            // creates the "pretty points" to graph points at integer y-values
+            if(Number.isInteger(yvalue) && Number.isInteger(xValues[i])){        
+               xValues2.push(xValues[i]);
+               yValues2.push(yvalue);        
+            }          
+      }         
+            
+      // render the function using plotly
+      var trace1 = {
+        x: xValues,
+        y: yValues,
+        type: 'scatter',
+        mode: 'lines',        
+        line: {
+          color: col,
+          width: 2,
+          dash: "line"
+        },
+        name:"",
+      };   
+      
+      if(dotBoolean){
+      
+      // render the "pretty points" using plotly
+      var trace2 = {
+        x: xValues2,
+        y: yValues2,
+        type: 'scatter',
+        mode: 'markers',
+        marker: {
+          color: col,
+          size: 8
+        },
+        hoverinfo:'none'
+      };
+      
+      }
+      
+      var axis_template ={
+        showgrid: true,
+        zeroline: true,
+        nticks: 23,
+        range: [-11,11], 
+        gridcolor: '#bdbdbd', //grid color
+        gridwidth: 1.2, //grid width
+        zerolinecolor: 'black', // axes color
+        zerolinewidth: 1.5, // axes widths
+        showticklabels:false
+      };        
+      
+           
+      if(dotBoolean){
+        data.push(trace1,trace2);
+      }
+      else{
+         data.push(trace1);
+      }
+      
+      }
+      
+      // make grid smaller for mobile
+      var gridsize;
+      var indent;
+      // gridsize= Math.min(.95*window.innerWidth,550);
+      
+      if(window.innerWidth > 601){
+         gridsize = 550;
+         indent = 20;
+      }else{
+         gridsize = 350;
+         indent = 0;
+      }
+      
+      var xTickMarkLabels =   {
+        x: [-10.1,-9.1,-8.1,-7.1,-6.1,-5.1,-4.1,-3.1,-2.1,-1.1,0,1,2,3,4,5,6,7,8,9,10],
+        y: [-0.1,-0.1,-0.1,-0.1,-0.1,-0.1,-0.1,-0.1,-0.1,-0.1,-0.1,-0.1,-0.1,-0.1,-0.1,-0.1,-0.1,-0.1,-0.1,-0.1,-0.1],
+        mode: 'text',
+        text:[-10,-9,-8,-7,-6,-5,-4,-3,-2,-1,0,1,2,3,4,5,6,7,8,9,10],
+        textposition:"bottom",
+        textfont: {
+          size:13,
+        },
+        hoverinfo:'none'
+      };   
+      
+      var yTickMarkLabels =   {
+        y: [-10.1,-9.1,-8.1,-7.1,-6.1,-5.1,-4.1,-3.1,-2.1,-1.1,0,1,2,3,4,5,6,7,8,9,10],
+        x: [-0.1,-0.1,-0.1,-0.1,-0.1,-0.1,-0.1,-0.1,-0.1,-0.1,-0.1,-0.1,-0.1,-0.1,-0.1,-0.1,-0.1,-0.1,-0.1,-0.1,-0.1],
+        mode: 'text',
+        text:[-10,-9,-8,-7,-6,-5,-4,-3,-2,-1,0,1,2,3,4,5,6,7,8,9,10],
+        textposition:"left",
+        textfont: {
+          size:13,
+        },
+        hoverinfo:'none'
+      };
+      
+      var layout = {
+        xaxis:axis_template,
+        yaxis:axis_template,
+        showlegend: false,
+        width: gridsize,
+        height: gridsize,
+        hovermode: 'closest',   
+        font:{size: 18},
+        margin: {l: indent,  r: 30, t: 20}
+      };
+      
+      layout.annotations= [
+      {
+         x: 0,
+         y: 11,
+         showarrow: true,
+         arrowsize:2,
+         arrowwidth:1,
+         arrowhead:3,
+         ax: 0,
+         ay: 35
+       },
+       {
+         x: 0,
+         y: -11,
+         showarrow: true,
+         arrowsize:2,
+         arrowwidth:1,
+         arrowhead:3,
+         ax: 0,
+         ay: -35
+       },
+       {
+         x: 11,
+         y: 0,
+         showarrow: true,
+         arrowsize:2,
+         arrowwidth:1,
+         arrowhead:3,
+         ax: -35,
+         ay: 0
+       },
+       {
+         x: -11,
+         y: 0,
+         showarrow: true,
+         arrowsize:2,
+         arrowwidth:1,
+         arrowhead:3,
+         ax: 35,
+         ay: 0
+       }
+
+     ];
+      data.push(xTickMarkLabels,yTickMarkLabels);
+      Plotly.newPlot(plot, data, layout,{displayModeBar: false});
+    }
+    catch (err) {
+      console.error(err)
+    }
+  }
+</script>
