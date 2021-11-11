@@ -382,15 +382,17 @@ var graphs = false;
           x = non_zero_random(-5,5);
           y = non_zero_random(-5,5);
           
-          this.answer = "\\(("+x+", "+y+")\\)";
+          //this.answer = "\\(("+x+", "+y+")\\)";
           
           var end = 5;
-          
+          var oneAnswer = false;
+
           if(!one){ end = 7;}
           
           switch(random(0,end)){
               // both y = form
               case 0: case 1: case 2:
+              oneAnswer = true;
               do{c = non_zero_random(-5, 5); d = y-(c*x); } while (d >= 11 || d <= -11);
               do{b = random(-6, 6);} while(y==b || d==b || b == (y-c*x));
               a = simplifyFrac(y-b,x);
@@ -413,6 +415,7 @@ var graphs = false;
               
               // solve for y first
               case 3: case 4: case 5:
+              oneAnswer = true;
               do{c = non_zero_random(-5, 5); d = y-(c*x); } while (d >= 11 || d <= -11);
               do{b = random(-6, 6);} while(y==b || d==b || b == (y-c*x));
               a = b-y;
@@ -466,12 +469,12 @@ var graphs = false;
               
               
           }
-              draw([line1,line2],true,"plot-dots");
-              draw([line1,line2],false,"plot-no-dots");
+              draw([line1,line2],true,"plot-dots",oneAnswer,x,y);
+              draw([line1,line2],false,"plot-no-dots",oneAnswer,x,y);
           
        }
     
-    function draw(lines,dotBoolean,plot) {
+    function draw(lines,dotBoolean,plot,oneSolution,xCoord,yCoord) {
     
     var colors = ['#3F4591', '#129649'];
     var shadingTriangles = [];
@@ -569,6 +572,23 @@ var graphs = false;
         },
         hoverinfo:'none'
       };
+      var solutionCoord = "("+xCoord+", "+yCoord+")";
+      var solution ={
+        x: [xCoord],
+        y: [yCoord],
+        mode: 'markers+text',
+        text:[solutionCoord],
+        textposition:"right",
+        textfont: {
+          size:18,
+          color:"3F4591"
+        },
+        marker: {
+          color: "ff6600",
+          size: 14
+        },
+        hoverinfo:'none'
+      };
 
       // make grid smaller for mobile
       var gridsize;
@@ -662,6 +682,9 @@ var graphs = false;
 
      ];
       data.push(xTickMarkLabels,yTickMarkLabels,axisMarkers);
+
+      if(oneSolution){ data.push(solution);}
+
       Plotly.newPlot(plot, data, layout,{displayModeBar: false});
     }
     catch (err) {
