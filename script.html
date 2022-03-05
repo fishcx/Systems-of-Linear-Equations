@@ -169,7 +169,7 @@ var graphs = false;
           if(!one){ end = 12;}
           
           switch(random(0,end)){
-          //switch(9){
+          //switch(3){
               
               case 0: case 1: case 2:  
               a = non_zero_random(-5,5);
@@ -183,7 +183,7 @@ var graphs = false;
               case 3: case 4: case 5: 
               a = non_zero_random(-5,5);
               b = non_zero_random(-5,5);
-              do{d = random(2,5);} while(-1*a==d*b);
+              do{d = random(2,5); } while((-1*a*d)==b);
               c = a*x+b*y;
               e = x-(d*y); 
               this.equation2 = a+"x + "+b+"y = "+c; this.equation1="x = "+d+"y + "+e;  
