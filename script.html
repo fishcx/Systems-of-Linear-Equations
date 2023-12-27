@@ -485,11 +485,21 @@ var graphs = false;
   
           var contextProblem;
 
-          switch(random(0,0)){
+          switch(random(0,2)){
              
              // case 0 - perimeter
              case 0:
              var contextProblem = getPerimeterProb();
+             break;
+
+             // case 1 - tickets
+             case 1:
+             var contextProblem = getTicketProblem();
+             break;
+
+             // case 2 - tacos and drinks
+             case 2:
+             var contextProblem = getTacosProblem();
              break;
               
            }   
@@ -522,6 +532,83 @@ var graphs = false;
         context = "The length of a rectangle is \\("+a+"\\) "+word+" than \\("+b+"\\) times its width. If the perimeter is \\("+perim+"\\), write and solve a system to determine the length and width.";
 
         return {problem:context,answer:"Width: "+width+", Length: "+length};
+    }
+
+    function getTicketProblem(){
+
+      var person = generateName();
+      var name = person.name; var pron = person.pronoun;
+
+      var adultCost = randomDec(8,15,1);
+      // use .toFixed(2); when displaying
+      var childCost = adultCost-random(1,5,1);
+      var numChildren = random(10,50);
+      var numAdults = random(10,50);
+      var totalMoney = formatDec(adultCost*numAdults+childCost*numChildren);
+
+      var context = name+" is selling tickets for a school concert. The cost for an adult is $"+adultCost.toFixed(2)+" and the cost for a child is $"+childCost.toFixed(2)+". There were "+(numChildren+numAdults)+" total tickets sold for a total cost of $"+totalMoney.toFixed(2)+". Write and solve a system of equations to determine the number of each type of ticket that was sold.";
+
+      return {problem:context,answer: numChildren+" child tickets and "+numAdults+" adult tickets"};
+
+    }
+
+    function getTacosProblem(){
+
+      var person1 = generateName();
+      var name1 = person1.name; var pron1 = person1.pronoun;
+      
+      var person2 = person1;
+      do{ person2 = generateName(); } while(person2.name == person1.name);
+      var name2 = person2.name; 
+      var pron2 = person2.pronoun;
+
+      var drinkCost = randomDec(1.1,2.99,2);
+      var tacoCost = randomDec(1.1,3.99,2);
+      var drinkNum1 = random(1,5);
+      var tacoNum1 = random(1,5);
+
+      var drinkWord = "drinks"; var tacoWord = "tacos";
+      if(drinkNum1 == 1){ drinkWord = "drink";}
+      if(tacoNum1 == 1){tacoWord = "taco";}
+
+      var drinkNum2 = drinkNum1;
+      var tacoNum2 = tacoNum1;
+
+      do{ drinkNum2 = random(2,8); tacoNum2 = random(2,9); } while( drinkNum2 == drinkNum1 && tacoNum2 == tacoNum1);
+
+      var total1 = formatDec(drinkCost*drinkNum1+tacoCost*tacoNum1);
+      var total2 = formatDec(drinkCost*drinkNum2+tacoCost*tacoNum2);
+
+      var context = name1+" buys "+drinkNum1+" "+drinkWord+" and "+tacoNum1+" "+tacoWord+" at José Joes and spends $"+total1.toFixed(2)+". "+name2+" buys "+drinkNum2+" drinks and "+tacoNum2+" tacos and spends $"+total2.toFixed(2)+". Write and solve a system to determine the drink cost and taco cost.";
+
+      return {problem:context,answer: "Drink cost: $"+drinkCost.toFixed(2)+", Taco cost: $"+tacoCost.toFixed(2)};
+
+    }
+
+    // helper function for generatePropWord
+    function generateName(){
+       
+       var options = [
+                          {name:"John", pronoun:"he"},
+                          {name:"Jane", pronoun:"she"},
+                          {name:"Bill", pronoun:"he"},
+                          {name:"Alex", pronoun:"she"},
+                          {name:"Jennifer", pronoun:"she"},
+                          {name:"Skyler", pronoun:"she"},
+                          {name:"Michael", pronoun:"he"},
+                          {name:"Sarah", pronoun:"she"},
+                          {name:"Kim", pronoun:"she"},
+                          {name:"Jacob", pronoun:"he"},
+                          {name:"Jessica", pronoun:"she"},
+                          {name:"Antonio", pronoun:"he"},
+                          {name:"Anthony", pronoun:"he"},
+                          {name:"Rebecca", pronoun:"she"},
+                          {name:"Jen", pronoun:"she"},
+                          {name:"Jeff", pronoun:"he"}
+                      ];
+        
+        var chosen = options[random(0,options.length-1)];
+        return chosen;
     }
 
     function draw(lines,dotBoolean,plot,oneSolution,xCoord,yCoord) {

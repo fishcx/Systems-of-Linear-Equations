@@ -10,6 +10,13 @@
      return Math.round(a*100000)/100000;
    
    }
+   function randomDec(min, max, decimalPlaces) {  
+        var rand = Math.random()*(max-min) + min;
+        var power = Math.pow(10, decimalPlaces);
+        var output = formatDec((Math.floor(rand*power) / power));
+
+        return output;
+    }
 String.prototype.replaceAll = function(searchStr, replaceStr) {
 	var str = this;
 
