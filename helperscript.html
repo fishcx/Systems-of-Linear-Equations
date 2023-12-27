@@ -4,6 +4,12 @@
 
        return string.replaceAll("-+", "-").replaceAll("- +", "-").replaceAll("+ -", "-").replaceAll("- -", "+").replaceAll("+-", "-").replaceAll("-- ", "+");
     }
+    // use this for complicated calculations to format the decimal correctly for floating point errors
+   function formatDec(a){
+   
+     return Math.round(a*100000)/100000;
+   
+   }
 String.prototype.replaceAll = function(searchStr, replaceStr) {
 	var str = this;
 
