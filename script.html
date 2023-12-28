@@ -508,9 +508,10 @@ var graphs = false;
         }
     
     function getPerimeterProb(){
-        var a = random(2,9);
-        var b = random(2,9);
-        var width = random(3,15);
+        var b = random(2,9); 
+        var width = random(5,25);
+        var a = random(2,b*width-5);
+        
         var context, length, perim, word;
 
         switch(random(0,1)){
