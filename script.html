@@ -271,9 +271,11 @@ var graphs = false;
           y = random(-10,10);
           this.answer = "\\(("+x+", "+y+")\\)";
           
-          var end = 5;
-          
-          if(!one){ end = 9;}
+          //var end = 5;
+          var end = 3;
+
+          //if(!one){ end = 9;}
+          if(!one){ end = 5;}
           
           switch(random(0,end)){
              
@@ -301,6 +303,7 @@ var graphs = false;
               this.equation1 = a+"x + "+b+"y = "+c; this.equation2 =d+"x + "+e+"y = "+f;  
               break;
               
+              /*
               //rerarranges cases 0 and 1
               case 4:   
               a = non_zero_random(-5,5);
@@ -326,7 +329,7 @@ var graphs = false;
               break;
               
               // infinite solutions
-              case 6:
+              case 4:
               a = non_zero_random(-10, 10);
               b = non_zero_random(-10, 10);
               c = non_zero_random(-10, 10);
@@ -337,9 +340,11 @@ var graphs = false;
               this.answer = "\\(\\infty\\) solutions, equivalent lines";
               this.equation1 = a+"x = "+c+" + "+-1*b+"y"; this.equation2=d+"x + "+e+"y = "+f;
               break;
+              */
               
               // infinite solutions
-              case 7:
+              //case 5:
+              case 4:
               a = non_zero_random(-10, 10);
               b = non_zero_random(-10, 10);
               c = non_zero_random(-10, 10);
@@ -351,8 +356,10 @@ var graphs = false;
               this.equation1 = a+"x + "+b+"y = "+c; this.equation2=d+"x + "+e+"y = "+f;
               break;
               
+              
               // no solutions
-              case 8:
+              //case 6:
+              case 5:
               a = non_zero_random(-10, 10);
               b = non_zero_random(-10, 10);
               c = non_zero_random(-10, 10);
@@ -364,8 +371,9 @@ var graphs = false;
               this.equation1 = a+"x + "+b+"y = "+c; this.equation2=d+"x + "+e+"y = "+f;
               break;
               
+              /*
               // no solutions
-              case 9:
+              case 5:
               a = non_zero_random(-10, 10);
               b = non_zero_random(-10, 10);
               c = non_zero_random(-10, 10);
@@ -376,6 +384,7 @@ var graphs = false;
               this.answer = "No solutions, parallel lines";
               this.equation1 = a+"x = "+c+" + "+-1*b+"y"; this.equation2=d+"x + "+e+"y = "+f;
               break;
+              */
            }   
            this.problem = "\\("+simplify(equation1)+"\\)<br>\\("+simplify(doublesigns(equation2))+"\\)";
         }
