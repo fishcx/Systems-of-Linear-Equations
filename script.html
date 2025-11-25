@@ -522,18 +522,21 @@ var graphs = false;
         var a = random(2,b*width-5);
         
         var context, length, perim, word;
+        var symb = "";
 
         switch(random(0,1)){
             // less than
             case 0:
             length = formatDec(b*width-a);
             word = "less";
+            symb = " - ";
             break;
 
             // more than
             case 1:
             length = formatDec(b*width+a);
             word = "more";
+            symb = " + ";
             break;
 
         }
@@ -541,7 +544,7 @@ var graphs = false;
 
         context = "The length of a rectangle is \\("+a+"\\) "+word+" than \\("+b+"\\) times its width. If the perimeter is \\("+perim+"\\), write and solve a system to determine the length and width.";
 
-        return {problem:context,answer:"Width: "+width+", Length: "+length};
+        return {problem:context,answer:`\\(L = ${b}W ${symb} ${a} \\)<br>\\(2L + 2W = ${perim}\\) <br> Width: ${width}, Length: ${length}`};
     }
 
     function getTicketProblem(){
@@ -558,7 +561,7 @@ var graphs = false;
 
       var context = name+" is selling tickets for a school concert. The cost for an adult is $"+adultCost.toFixed(2)+" and the cost for a child is $"+childCost.toFixed(2)+". There were "+(numChildren+numAdults)+" total tickets sold for a total cost of $"+totalMoney.toFixed(2)+". Write and solve a system of equations to determine the number of each type of ticket that was sold.";
 
-      return {problem:context,answer: numChildren+" child tickets and "+numAdults+" adult tickets"};
+      return {problem:context,answer: `\\(${adultCost.toFixed(2)}a + ${childCost.toFixed(2)}c = ${totalMoney}\\)<br>\\(a + c = ${numChildren+numAdults}\\)<br>${numChildren} child tickets and ${numAdults} adult tickets`};
 
     }
 
@@ -591,7 +594,7 @@ var graphs = false;
 
       var context = name1+" buys "+drinkNum1+" "+drinkWord+" and "+tacoNum1+" "+tacoWord+" at José Joes and spends $"+total1.toFixed(2)+". "+name2+" buys "+drinkNum2+" drinks and "+tacoNum2+" tacos and spends $"+total2.toFixed(2)+". Write and solve a system to determine the drink cost and taco cost.";
 
-      return {problem:context,answer: "Drink cost: $"+drinkCost.toFixed(2)+", Taco cost: $"+tacoCost.toFixed(2)};
+      return {problem:context,answer: `\\(${drinkNum1}d+${tacoNum1}t=${total1.toFixed(2)}\\)<br>\\(${drinkNum2}d+${tacoNum2}t=${total2.toFixed(2)}\\)<br>Drink cost: $ ${drinkCost.toFixed(2)}, Taco cost: $ ${tacoCost.toFixed(2)}`};
 
     }
 
