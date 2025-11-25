@@ -494,7 +494,7 @@ var graphs = false;
   
           var contextProblem;
 
-          switch(random(0,2)){
+          switch(random(0,3)){
              
              // case 0 - perimeter
              case 0:
@@ -509,6 +509,11 @@ var graphs = false;
              // case 2 - tacos and drinks
              case 2:
              var contextProblem = getTacosProblem();
+             break;
+
+             // case 3 - nickels and dimes
+             case 3:
+             var contextProblem = getMoneyProblem();
              break;
               
            }   
@@ -545,6 +550,43 @@ var graphs = false;
         context = "The length of a rectangle is \\("+a+"\\) "+word+" than \\("+b+"\\) times its width. If the perimeter is \\("+perim+"\\), write and solve a system to determine the length and width.";
 
         return {problem:context,answer:`\\(L = ${b}W ${symb} ${a} \\)<br>\\(2L + 2W = ${perim}\\) <br> Width: ${width}, Length: ${length}`};
+    }
+
+    function getMoneyProblem(){
+
+      var person = generateName();
+      var name = person.name; var pron = person.pronoun;
+
+      var numNickels = random(5,50);
+      var b = random(2,5);
+      var numDimes = 0;
+      var c = random(2,5);
+
+      switch(random(0,1)){
+            // less than
+            case 0:
+            do{
+              numDimes = formatDec(b*numNickels-c);
+            } while(numDimes < 1);
+            word = "less";
+            symb = " - ";
+            break;
+
+            // more than
+            case 1:
+            numDimes = formatDec(b*numNickels+c);
+            word = "more";
+            symb = " + ";
+            break;
+
+        }
+
+      var totalMoney = formatDec(numNickels*0.05+numDimes*0.10);
+
+      var context = `${name} has a total of $${totalMoney.toFixed(2)} in dimes and nickels. The number of dimes ${pron} has is ${c} ${word} than ${b} times the number of nickels. Write and solve a system of equations to determine the number of nickels and dimes.`;
+
+      return {problem:context,answer: `\\(d = ${b}n ${symb} ${c}\\)<br>\\(0.05n + 0.10d = ${totalMoney.toFixed(2)}\\)<br>${numNickels} nickels and ${numDimes} dimes`};
+
     }
 
     function getTicketProblem(){
@@ -594,7 +636,7 @@ var graphs = false;
 
       var context = name1+" buys "+drinkNum1+" "+drinkWord+" and "+tacoNum1+" "+tacoWord+" at José Joes and spends $"+total1.toFixed(2)+". "+name2+" buys "+drinkNum2+" drinks and "+tacoNum2+" tacos and spends $"+total2.toFixed(2)+". Write and solve a system to determine the drink cost and taco cost.";
 
-      return {problem:context,answer: `\\(${drinkNum1}d+${tacoNum1}t=${total1.toFixed(2)}\\)<br>\\(${drinkNum2}d+${tacoNum2}t=${total2.toFixed(2)}\\)<br>Drink cost: $ ${drinkCost.toFixed(2)}, Taco cost: $ ${tacoCost.toFixed(2)}`};
+      return {problem:context,answer: `\\(${drinkNum1}d+${tacoNum1}t=${total1.toFixed(2)}\\)<br>\\(${drinkNum2}d+${tacoNum2}t=${total2.toFixed(2)}\\)<br>Drink cost: $${drinkCost.toFixed(2)}, Taco cost: $${tacoCost.toFixed(2)}`};
 
     }
 
