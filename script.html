@@ -600,10 +600,27 @@ var graphs = false;
       var numChildren = random(10,50);
       var numAdults = random(10,50);
       var totalMoney = formatDec(adultCost*numAdults+childCost*numChildren);
+      var totalOneEach = adultCost+childCost;
 
-      var context = name+" is selling tickets for a school concert. The cost for an adult is $"+adultCost.toFixed(2)+" and the cost for a child is $"+childCost.toFixed(2)+". There were "+(numChildren+numAdults)+" total tickets sold for a total cost of $"+totalMoney.toFixed(2)+". Write and solve a system of equations to determine the number of each type of ticket that was sold.";
+      var context = "";
 
-      return {problem:context,answer: `\\(${adultCost.toFixed(2)}a + ${childCost.toFixed(2)}c = ${totalMoney}\\)<br>\\(a + c = ${numChildren+numAdults}\\)<br>${numChildren} child tickets and ${numAdults} adult tickets`};
+      switch(random(0,1)){
+        
+        // number of tickets
+        case 0:
+         context = name+" is selling tickets for a school concert. The cost for an adult is $"+adultCost.toFixed(2)+" and the cost for a child is $"+childCost.toFixed(2)+". There were "+(numChildren+numAdults)+" total tickets sold for a total cost of $"+totalMoney.toFixed(2)+". Write and solve a system of equations to determine the number of each type of ticket that was sold.";
+
+        return {problem:context,answer: `\\(${adultCost.toFixed(2)}a + ${childCost.toFixed(2)}c = ${totalMoney}\\)<br>\\(a + c = ${numChildren+numAdults}\\)<br>${numChildren} child tickets and ${numAdults} adult tickets`};
+        break;
+
+        // cost of each type of ticket
+        case 1:
+         context = name+" is selling tickets for a school concert. There were "+numAdults+" adult tickets and "+numChildren+" children tickets sold for a total cost of $"+totalMoney.toFixed(2)+". The cost of one adult ticket and one child ticket is $"+totalOneEach.toFixed(2)+".Write and solve a system of equations to determine the number of each type of ticket that was sold.";
+
+        return {problem:context,answer: `\\(${numAdults}a + ${numChildren}c = ${totalMoney}\\)<br>\\(a + c = ${totalOneEach}\\)<br>$${childCost.toFixed(2)} for a child's ticket and $${adultCost.toFixed(2)} for an adult ticket`};
+        break;
+
+      }
 
     }
 
@@ -633,10 +650,27 @@ var graphs = false;
 
       var total1 = formatDec(drinkCost*drinkNum1+tacoCost*tacoNum1);
       var total2 = formatDec(drinkCost*drinkNum2+tacoCost*tacoNum2);
+      var totalNumItems = drinkNum1+tacoNum1;
 
-      var context = name1+" buys "+drinkNum1+" "+drinkWord+" and "+tacoNum1+" "+tacoWord+" at José Joes and spends $"+total1.toFixed(2)+". "+name2+" buys "+drinkNum2+" drinks and "+tacoNum2+" tacos and spends $"+total2.toFixed(2)+". Write and solve a system to determine the drink cost and taco cost.";
+      var context = "";
+      
+      switch(random(0,1)){
+        
+        // number of drinks and tacos
+        case 0:
+           context = name1+" buys "+drinkNum1+" "+drinkWord+" and "+tacoNum1+" "+tacoWord+" at José Joe's and spends $"+total1.toFixed(2)+". "+name2+" buys "+drinkNum2+" drinks and "+tacoNum2+" tacos and spends $"+total2.toFixed(2)+". Write and solve a system to determine the drink cost and taco cost.";
 
-      return {problem:context,answer: `\\(${drinkNum1}d+${tacoNum1}t=${total1.toFixed(2)}\\)<br>\\(${drinkNum2}d+${tacoNum2}t=${total2.toFixed(2)}\\)<br>Drink cost: $${drinkCost.toFixed(2)}, Taco cost: $${tacoCost.toFixed(2)}`};
+          return {problem:context,answer: `\\(${drinkNum1}d+${tacoNum1}t=${total1.toFixed(2)}\\)<br>\\(${drinkNum2}d+${tacoNum2}t=${total2.toFixed(2)}\\)<br>Drink cost: $${drinkCost.toFixed(2)}, Taco cost: $${tacoCost.toFixed(2)}`};
+        break;
+
+        // cost of a drink and a taco
+        case 1:
+          context = "At José Joe's, one taco costs $"+tacoCost.toFixed(2)+" and one drink costs $"+drinkCost.toFixed(2)+"."+name1+" spends $"+total1.toFixed(2)+" on "+totalNumItems+" items total. Write and solve a system to determine the number of tacos and drinks purchased.";
+
+          return {problem:context,answer: `\\(${tacoCost.toFixed(2)}t + ${drinkCost.toFixed(2)}d=${total1.toFixed(2)}\\)<br>\\(t + d = ${totalNumItems}\\)<br>${tacoNum1} ${tacoWord} and ${drinkNum1} ${drinkWord}`};
+        break;
+
+      }
 
     }
 
