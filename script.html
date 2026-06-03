@@ -615,7 +615,7 @@ var graphs = false;
 
         // cost of each type of ticket
         case 1:
-         context = name+" is selling tickets for a school concert. There were "+numAdults+" adult tickets and "+numChildren+" children tickets sold for a total cost of $"+totalMoney.toFixed(2)+". The cost of one adult ticket and one child ticket is $"+totalOneEach.toFixed(2)+".Write and solve a system of equations to determine the number of each type of ticket that was sold.";
+         context = name+" is selling tickets for a school concert. There were "+numAdults+" adult tickets and "+numChildren+" children tickets sold for a total cost of $"+totalMoney.toFixed(2)+". The cost of one adult ticket and one child ticket is $"+totalOneEach.toFixed(2)+".Write and solve a system of equations to determine the cost of each type of ticket that was sold.";
 
         return {problem:context,answer: `\\(${numAdults}a + ${numChildren}c = ${totalMoney}\\)<br>\\(a + c = ${totalOneEach}\\)<br>$${childCost.toFixed(2)} for a child's ticket and $${adultCost.toFixed(2)} for an adult ticket`};
         break;
