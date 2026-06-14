@@ -598,13 +598,30 @@ var graphs = false;
       // use .toFixed(2); when displaying
       var childCost = adultCost-random(1,5,1);
       var numChildren = random(10,50);
-      var numAdults = random(10,50);
+      var numAdults; 
+      do{ numAdults = random(10,50); } while (numAdults == numChildren);
+      var compareWord;
+      var difference = 0;
+
+      // more adults
+      if(numAdults > numChildren){
+        compareWord = "more";
+        compareSymb = " + ";
+        difference = numAdults - numChildren;
+      }
+      // less adults
+      else{
+        compareWord = "fewer";
+        compareSymb = " - ";
+        difference = numChildren - numAdults;
+      }
+
       var totalMoney = formatDec(adultCost*numAdults+childCost*numChildren);
       var totalOneEach = formatDec(adultCost+childCost);
 
       var context = "";
 
-      switch(random(0,1)){
+      switch(random(0,2)){
         
         // number of tickets
         case 0:
@@ -618,6 +635,13 @@ var graphs = false;
          context = name+" is selling tickets for a school concert. There were "+numAdults+" adult tickets and "+numChildren+" children tickets sold for a total cost of $"+totalMoney.toFixed(2)+". The cost of one adult ticket and one child ticket is $"+totalOneEach.toFixed(2)+".Write and solve a system of equations to determine the cost of each type of ticket that was sold.";
 
         return {problem:context,answer: `\\(${numAdults}a + ${numChildren}c = ${totalMoney}\\)<br>\\(a + c = ${totalOneEach}\\)<br>$${childCost.toFixed(2)} for a child's ticket and $${adultCost.toFixed(2)} for an adult ticket`};
+        break;
+
+        // number of tickets - set up for substitution
+        case 2:
+         context = name+" is selling tickets for a school concert. The cost for an adult is $"+adultCost.toFixed(2)+" and the cost for a child is $"+childCost.toFixed(2)+". There were "+difference+" "+compareWord+" adults tickets sold than child tickets. The total money raised was $"+totalMoney.toFixed(2)+". Write and solve a system of equations to determine the number of each type of ticket that was sold.";
+
+        return {problem:context,answer: `\\(${adultCost.toFixed(2)}a + ${childCost.toFixed(2)}c = ${totalMoney}\\)<br>\\(a = c ${compareSymb} ${difference}\\)<br>${numChildren} child tickets and ${numAdults} adult tickets`};
         break;
 
       }
